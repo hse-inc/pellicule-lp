@@ -1112,3 +1112,6 @@ a { color: inherit; text-decoration: none; }
 .page--entry { background:
   radial-gradient(circle, #d6e4f4 0 1.8px, transparent 2.2px) 0 0 / 24px 24px,
   radial-gradient(circle, #fbd5c0 0 1.8px, transparent 2.2px) 12px 12px / 24px 24px, var(--color-base); }
+
+.page--s1, .page--s2 { background: radial-gradient(circle, #fbd5c0 0 1.6px, transparent 2px) 0 0 / 20px 20px, var(--color-base); }
+.page--daily, .page--company, .page--entry { background: var(--color-base); }
