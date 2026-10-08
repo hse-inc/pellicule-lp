@@ -182,6 +182,20 @@
     new MutationObserver(() => { if (pg.classList.contains('play')) run(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
   }
 
+  const gal = document.querySelector('.gallery');
+  if (gal) {
+    const pg = gal.closest('.page');
+    const cards = [...gal.querySelectorAll('.diary__c')]; const N = cards.length;
+    let a = 0, timer = null;
+    const set = () => cards.forEach((c, i) => {
+      let off = i - a; if (off > N / 2) off -= N; if (off < -N / 2) off += N;
+      c.style.setProperty('--off', off); c.style.setProperty('--abs', Math.min(2, Math.abs(off))); c.style.visibility = Math.abs(off) > 2 ? 'hidden' : '';
+    });
+    set();
+    const run = () => { clearInterval(timer); a = 0; set(); if (!reduce) timer = setInterval(() => { a = (a + 1) % N; set(); }, 2200); };
+    new MutationObserver(() => { if (pg.classList.contains('play')) run(); else clearInterval(timer); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+  }
+
   const sync = () => {
     pages.forEach((pg) => {
       const on = pg.classList.contains('is-active');

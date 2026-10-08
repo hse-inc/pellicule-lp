@@ -441,6 +441,17 @@ a { color: inherit; text-decoration: none; }
 .levels__txt .climb__l.is-wait { max-height: 0; overflow: hidden; margin: 0; }
 .levels__txt .climb__l { max-height: 4em; border: 0 !important; padding-left: 0 !important; }
 
+.key--blue { --on: var(--color-blue); }
+.page--level .body + .body--steps, .page--level .body--steps + .body { margin-top: calc(var(--u) * 1.5); }
+
+.page--level .body + .gallery, .page--level .gallery + .body--steps { margin-top: calc(var(--u) * 1.5); }
+.gallery .diary__c { padding-bottom: 0.3em; }
+.gallery .diary__stage { height: 6.4em; }
+.page--level .hook__n { font-size: 2em; }
+.page--level .mega--q { font-size: 1.8em; }
+@media (min-width: 960px) { .page--level .body { line-height: 1.72; } }
+.gallery .diary__c { width: 7.8em; margin-left: -3.9em; }
+
 .page__inner { justify-content: flex-start; padding-top: calc(var(--header-h) + 0.8em); padding-bottom: calc(4.2em + 10px); }
 .page--concept .page__inner { gap: 1.05em; }
 .page__inner > :first-child { margin-top: auto; }
