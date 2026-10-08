@@ -18,7 +18,7 @@
     return out;
   };
   pages.forEach((pg) => {
-    let t = pg.id === 'p3' ? 1500 : 450;
+    let t = pg.id === 'p3' ? 850 : 450;
     const wrapEl = (el) => { const t0 = t; wrap(el); el.style.setProperty('--lt', t0 + 'ms'); el.style.setProperty('--ld', Math.max(300, t - t0 + 300) + 'ms'); };
     const wrap = (node) => {
       [...node.childNodes].forEach((n) => {

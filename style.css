@@ -937,3 +937,39 @@ a { color: inherit; text-decoration: none; }
 .board { padding-block: 0.55em 0.45em; }
 .board__pic--2 { width: 74%; margin-top: -2.4em; }
 @media (max-height: 600px) { .page--s1 .sttl__t { font-size: 1.2em; } .page--s1 .big { font-size: 1.35em; } .page--s1 .page__inner > * + * { margin-top: calc(var(--u) * 0.8); } }
+
+.page.play .boom { animation-duration: 800ms; }
+.page.play .boom__n { animation-duration: 800ms; }
+.page--level.play .marq { animation-delay: 650ms; }
+.page--level.play .hook__eyes { animation-delay: 1250ms; }
+
+.hero__video { object-position: 50% 78%; }
+
+.lmark { position: absolute; z-index: 1; width: 13em; height: 13.2em; pointer-events: none; opacity: 0; }
+.page.play .lmark { animation: lm-in 1100ms var(--ease-out) 200ms both; }
+@keyframes lm-in { 0% { opacity: 0; transform: translateY(1.5em) rotate(-8deg); } 100% { opacity: var(--lo, 1); transform: none; } }
+
+.tone-blue { background: var(--color-blue); --off: rgb(255 255 255 / 0.3); --on: #fff; color: #fff; }
+.tone-blue .marq span { -webkit-text-stroke-color: rgb(255 255 255 / 0.16); }
+.tone-blue .marq--b span { -webkit-text-stroke-color: rgb(242 105 35 / 0.45); }
+.tone-blue .enlab__a { color: #fff; } .tone-blue .enlab__b { color: #ffb48a; } .tone-blue .enlab__c { color: #c9dcf2; }
+.tone-blue .hero-ttl .l { --on: #fff; }
+.tone-blue .hero-ttl .s { --on: #c9dcf2; }
+.tone-blue .key { --on: #ffb48a; }
+.tone-blue .mk { background-image: linear-gradient(transparent 62%, rgb(242 105 35 / 0.85) 62%); }
+.tone-blue .key.mk { --on: #fff; }
+.tone-blue .words .w1 { --on: #c9dcf2; } .tone-blue .words .w2 { --on: #ffb48a; } .tone-blue .words .w3 { --on: #fff; }
+.lmark--p2 { right: -3.4em; top: calc(var(--header-h) + 0.6em); --lo: 0.22; filter: brightness(0) invert(1); }
+.column[data-tone="blue"] .pager { color: #fff; }
+
+.tone-peach { background: #fde3d4; --off: rgb(33 33 33 / 0.22); }
+.tone-peach .marq span { -webkit-text-stroke-color: #f7c3a6; }
+.tone-peach .bignum { -webkit-text-stroke-color: #fff; }
+.tone-peach .mk { background-image: linear-gradient(transparent 60%, #fff 60%); }
+.lmark--p5 { left: -4.2em; bottom: -3.6em; width: 12em; height: 12.2em; --lo: 0.9; }
+
+.tone-blue .marq span { color: rgb(255 255 255 / 0.07); }
+.tone-blue .marq--b span { color: rgb(255 255 255 / 0.07); }
+.tone-peach .marq span { color: rgb(255 255 255 / 0.45); }
+.lmark--p2 { --lo: 0.12; }
+.lmark--p5 { left: -5.6em; bottom: -6.2em; --lo: 0.5; }
