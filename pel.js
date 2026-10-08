@@ -232,6 +232,58 @@
     pg.querySelectorAll('.mk.is-on, .gallery.is-on, .blk.is-on').forEach((el) => el.classList.remove('is-on'));
   };
 
+  function makeRoll(al, pg) {
+    const srcs = [...al.querySelectorAll('li img')].map((im) => im.getAttribute('src'));
+    const N = srcs.length;
+    const cards = srcs.concat(srcs).map((src) => '<figure class="roll__c"><img src="' + src + '" alt="" decoding="async"></figure>').join('');
+    const roll = document.createElement('div'); roll.className = 'roll';
+    roll.innerHTML = '<div class="roll__view"><div class="roll__track">' + cards + '</div></div>'
+      + '<p class="roll__no"><span class="roll__now">01</span><span class="roll__all">/' + String(N).padStart(2, '0') + '</span></p>'
+      + '<div class="roll__ruler"></div>'
+      + '<div class="roll__ctrl"><button type="button" class="roll__btn roll__prev" aria-label="前の写真へ"></button>'
+      + '<button type="button" class="roll__btn roll__play is-on" aria-label="一時停止"></button>'
+      + '<button type="button" class="roll__btn roll__next" aria-label="次の写真へ"></button></div>';
+    al.appendChild(roll);
+    const track = roll.querySelector('.roll__track'), view = roll.querySelector('.roll__view');
+    const now = roll.querySelector('.roll__now'), ruler = roll.querySelector('.roll__ruler'), play = roll.querySelector('.roll__play');
+    const SPEED = 38;
+    let x = 0, last = 0, raf = 0, playing = !reduce, active = false, tween = null;
+    const step = () => { const c = track.children[0]; return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 300; };
+    const loopW = () => step() * N;
+    const render = () => {
+      const W = loopW(); if (W > 0) { x = ((x % W) + W) % W; }
+      track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
+      ruler.style.backgroundPositionX = (-x * 0.5) + 'px';
+      const i = ((Math.round((x + view.clientWidth / 2 - track.children[0].offsetLeft - step() / 2) / step()) % N) + N) % N;
+      now.textContent = String(i + 1).padStart(2, '0');
+    };
+    const tick = (t) => {
+      if (!active) { raf = 0; return; }
+      const dt = last ? Math.min(64, t - last) : 16; last = t;
+      if (tween) {
+        const k = Math.min(1, (t - tween.t0) / 650), e = 1 - Math.pow(1 - k, 3);
+        x = tween.from + (tween.to - tween.from) * e; if (k >= 1) tween = null;
+      } else if (playing) { x += SPEED * dt / 1000; }
+      render(); raf = requestAnimationFrame(tick);
+    };
+    const start = () => { active = true; last = 0; if (!raf) raf = requestAnimationFrame(tick); };
+    const stop = () => { active = false; };
+    const jump = (dir) => {
+      const s = step(), base = Math.round(x / s) * s;
+      tween = { from: x, to: base + dir * s, t0: performance.now() };
+      if (!active) start();
+    };
+    roll.querySelector('.roll__prev').addEventListener('click', () => jump(-1));
+    roll.querySelector('.roll__next').addEventListener('click', () => jump(1));
+    play.addEventListener('click', () => {
+      playing = !playing; play.classList.toggle('is-on', playing);
+      play.setAttribute('aria-label', playing ? '一時停止' : '再生');
+    });
+    new MutationObserver(() => { if (pg.classList.contains('play')) start(); else stop(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+    addEventListener('resize', render);
+    requestAnimationFrame(render);
+  }
+
   function makeBook(al, pg) {
     const srcs = [...al.querySelectorAll('li img')].map((im) => im.getAttribute('src'));
     const book = document.createElement('div'); book.className = 'book';
@@ -259,6 +311,7 @@
     const pg = al.closest('.page');
     const mode = new URLSearchParams(location.search).get('album') || pg.dataset.album || 'book';
     pg.dataset.album = mode;
+    if (mode === 'roll') { makeRoll(al, pg); return; }
     if (mode === 'book') { makeBook(al, pg); return; }
     const cards = [...al.querySelectorAll('li')];
     cards.forEach((c, i) => c.style.setProperty('--i', i));
