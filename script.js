@@ -6,10 +6,12 @@
   const pad = (n) => String(n).padStart(2, '0');
 
   const pagerNow = document.querySelector('.pager__now');
-  const pagerBar = document.querySelector('.pager__bar i');
+  const pagerBar = null;
   const railNow = document.querySelector('.rail-side__now');
   const railName = document.querySelector('.rail-side__name');
   document.querySelector('.pager__all').textContent = pad(total);
+  const bar = document.querySelector('.pager__bar');
+  if (bar) bar.innerHTML = Array.from({ length: total }, () => '<b></b>').join('');
 
   pages.forEach((page) => {
     page.querySelectorAll('.rv').forEach((el, i) => el.style.setProperty('--i', i));
@@ -23,6 +25,7 @@
     column.dataset.tone = page.dataset.tone;
     pagerNow.textContent = pad(index);
     if (pagerBar) pagerBar.style.setProperty('--p', total ? index / total : 0);
+    if (bar) [...bar.children].forEach((x, k) => x.classList.toggle('is-on', k === index - 1));
     if (railNow) railNow.textContent = pad(index);
     if (railName) railName.textContent = page.dataset.label;
   };

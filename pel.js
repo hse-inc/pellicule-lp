@@ -239,13 +239,12 @@
     const roll = document.createElement('div'); roll.className = 'roll';
     roll.innerHTML = '<div class="roll__view"><div class="roll__track">' + cards + '</div></div>'
       + '<p class="roll__no"><span class="roll__now">01</span><span class="roll__all">/' + String(N).padStart(2, '0') + '</span></p>'
-      + '<div class="roll__ruler"></div>'
       + '<div class="roll__ctrl"><button type="button" class="roll__btn roll__prev" aria-label="前の写真へ"></button>'
       + '<button type="button" class="roll__btn roll__play is-on" aria-label="一時停止"></button>'
       + '<button type="button" class="roll__btn roll__next" aria-label="次の写真へ"></button></div>';
     al.appendChild(roll);
     const track = roll.querySelector('.roll__track'), view = roll.querySelector('.roll__view');
-    const now = roll.querySelector('.roll__now'), ruler = roll.querySelector('.roll__ruler'), play = roll.querySelector('.roll__play');
+    const now = roll.querySelector('.roll__now'), play = roll.querySelector('.roll__play');
     const SPEED = 38;
     let x = 0, last = 0, raf = 0, playing = !reduce, active = false, tween = null;
     const step = () => { const c = track.children[0]; return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 300; };
@@ -253,7 +252,6 @@
     const render = () => {
       const W = loopW(); if (W > 0) { x = ((x % W) + W) % W; }
       track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
-      ruler.style.backgroundPositionX = (-x * 0.5) + 'px';
       const i = ((Math.round((x + view.clientWidth / 2 - track.children[0].offsetLeft - step() / 2) / step()) % N) + N) % N;
       now.textContent = String(i + 1).padStart(2, '0');
     };
