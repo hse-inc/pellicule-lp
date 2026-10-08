@@ -10,7 +10,7 @@
     const raw = seg ? [...seg.segment(text)].map((x) => x.segment) : [text];
     const out = []; let cur = '';
     raw.forEach((w) => {
-      if (cur && (/^[「『（]/.test(w) || cur.length >= 10)) { out.push(cur); cur = ''; }
+      if (cur && (/^[「『（]/.test(w) || (cur.length >= 10 && !/^[、。！？」』）!?]/.test(w)))) { out.push(cur); cur = ''; }
       cur += w;
       if (/[、。！？」』）!?]$/.test(cur)) { out.push(cur); cur = ''; }
     });
@@ -37,7 +37,7 @@
           });
           n.replaceWith(frag);
         } else if (n.nodeType === 1) {
-          if (n.matches('.q2')) return;
+          if (n.matches('.q2')) { n.style.setProperty('--st', (t + 250) + 'ms'); return; }
           if (n.matches('svg')) { n.style.setProperty('--st', t + 'ms'); return; }
           if (n.matches('.tagx')) { n.style.setProperty('--st', (t + 200) + 'ms'); return; }
           if (n.matches('.stamp')) { n.style.setProperty('--st', (t + 500) + 'ms'); return; }
