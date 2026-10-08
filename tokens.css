@@ -1,0 +1,48 @@
+:root {
+  
+  --color-base: #f7f7f7;
+  --color-blue: #0563ae;
+  --color-orange: #f26923;
+
+  
+  --logo-blue: #0662ae;
+  --logo-blue-2: #78a4d8;
+  --logo-blue-3: #8eb1de;
+  --logo-blue-4: #c9dcf2;
+
+  
+  --color-ink: #212121;
+  --color-ink-soft: #5c5c5c;
+  --color-paper: #ffffff;
+  --color-line: rgb(33 33 33 / 0.14);
+  --color-blue-tint: #dfe9f5;
+  --color-orange-tint: #fde3d4;
+  --color-marker: #fbcfb6;  
+  --color-on-dark: #f7f7f7;
+  --color-on-dark-soft: rgb(247 247 247 / 0.72);
+
+  
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  --font-display: "Unbounded", "Zen Kaku Gothic New", sans-serif;
+  --font-en: "Syne", "Zen Kaku Gothic New", sans-serif;
+  --font-script: "Yellowtail", cursive;
+
+  
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  
+  --col: 480px;
+  --header-h: 60px;
+  --radius: 14px;
+
+  
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+}
