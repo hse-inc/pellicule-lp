@@ -5,7 +5,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const seg = window.Intl && Intl.Segmenter ? new Intl.Segmenter('ja', { granularity: 'word' }) : null;
 
-  const PER = 30, LINE_GAP = 90, BLOCK_GAP = 160;
+  const PER = 24, LINE_GAP = 72, BLOCK_GAP = 128;
   const phrases = (text) => {
     const raw = seg ? [...seg.segment(text)].map((x) => x.segment) : [text];
     const out = []; let cur = '';
@@ -18,7 +18,7 @@
     return out;
   };
   pages.forEach((pg) => {
-    let t = pg.id === 'p3' ? 850 : 450;
+    let t = pg.id === 'p3' ? 680 : 360;
     const wrapEl = (el) => { const t0 = t; wrap(el); el.style.setProperty('--lt', t0 + 'ms'); el.style.setProperty('--ld', Math.max(300, t - t0 + 300) + 'ms'); };
     const wrap = (node) => {
       [...node.childNodes].forEach((n) => {
@@ -49,9 +49,9 @@
       });
     };
     pg.querySelectorAll('.page__inner > *').forEach((el) => {
-      if (el.matches('.enlab')) { t += 500; return; }
+      if (el.matches('.enlab')) { t += 400; return; }
       if (el.matches('.shot')) {
-        el.querySelectorAll('.shot__tags li').forEach((li, k) => { t = Math.max(t, 2200 + k * 250); li.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
+        el.querySelectorAll('.shot__tags li').forEach((li, k) => { t = Math.max(t, 1760 + k * 200); li.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
         t += BLOCK_GAP; return;
       }
       if (el.matches('.levels')) {
@@ -93,16 +93,16 @@
       }
       if (el.matches('.gallery')) {
         el.style.setProperty('--gt', t + 'ms'); el.dataset.gt = t;
-        t += 700 + BLOCK_GAP; return;
+        t += 560 + BLOCK_GAP; return;
       }
       if (el.matches('.film')) {
-        el.querySelectorAll('.film__f').forEach((f, k) => { t = Math.max(t, 2000 + k * 250); f.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
+        el.querySelectorAll('.film__f').forEach((f, k) => { t = Math.max(t, 1600 + k * 200); f.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
         t += BLOCK_GAP; return;
       }
       const seq = (x) => {
         if (x.matches('.page__label')) return;
         if (x.matches('.kara')) { wrap(x); return; }
-        if (x.matches('.blk')) { x.dataset.gt = t; t += 450; }
+        if (x.matches('.blk')) { x.dataset.gt = t; t += 360; }
         [...x.children].forEach(seq);
       };
       seq(el);
@@ -320,6 +320,14 @@
     const run = () => { stop(); if (reduce) return; wait = setTimeout(() => { show(0); loop(); }, (+al.dataset.gt || 0) + cards.length * 110 + 900); };
     cards.forEach((c, i) => c.addEventListener('click', () => { clearTimeout(wait); show(k === i ? -1 : i); loop(); }));
     new MutationObserver(() => { if (pg.classList.contains('play')) run(); else stop(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  document.querySelectorAll('.req').forEach((req) => {
+    const tabs = [...req.querySelectorAll('.req__tab')];
+    tabs.forEach((b) => b.addEventListener('click', () => {
+      req.dataset.tab = b.dataset.t;
+      tabs.forEach((x) => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    }));
   });
 
   const form = document.querySelector('.entry');

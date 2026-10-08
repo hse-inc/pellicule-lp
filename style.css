@@ -1236,3 +1236,31 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .hb__ico { animation: none !important; } }
 .header-nav { gap: 14px; }
 @media (max-width: 370px) { .logo { width: 88px; } }
+
+.page.play .kara .c { animation-duration: 368ms, 224ms; }
+.page.play .kara .c { animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 304ms); }
+
+.req__tabs { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0.7em 0 0.4em; padding: 0.3em; border-radius: 999px; background: #eef1f5; }
+.req__tab { height: 2.6em; border: 0; border-radius: 999px; background: transparent; color: var(--color-ink-soft); font: inherit; font-weight: 900; font-size: 0.95em; cursor: pointer; transition: background-color 250ms linear, color 250ms linear; }
+.req__tab.is-on { background: var(--color-blue); color: #fff; box-shadow: 0 2px 6px rgb(5 99 174 / 0.3); }
+.req[data-tab="1"] .t2, .req[data-tab="2"] .t1 { display: none; }
+
+.page.play .shot__cam { animation-duration: 1200ms; animation-delay: 120ms; }
+.page.play .shot__flash { animation-duration: 880ms; animation-delay: 816ms; }
+.page.play .orb { animation-duration: 720ms; animation-delay: 880ms; }
+.page.play .orb__c img { animation-duration: 1760ms; animation-delay: 920ms; }
+.shot__tags li { --tg: 1680ms; } .shot__tags li:nth-child(2) { --tg: 1880ms; } .shot__tags li:nth-child(3) { --tg: 2080ms; }
+.page.play .shot__tags li { animation-duration: 448ms, 3.2s; }
+
+.page.play .boom, .page.play .boom__n { animation-duration: 640ms; }
+.page--level.play .marq { animation-delay: 520ms; }
+.page--level.play .hook__eyes { animation-delay: 1000ms; }
+
+.page.play .blk.is-on { animation-duration: 520ms; }
+.page.play .page--level .gallery.is-on, .page--level.play .gallery.is-on, .page--job.play .strip.is-on { animation-duration: 880ms; }
+.page.play .enlab > * { animation-duration: 416ms; }
+
+.page.play .kara.mega .c, .page.play .kara.hero-ttl .c, .page.play .kara .mega .c { animation-duration: 416ms, 208ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 240ms); }
+.page.play .kara.words .w1 .c { animation-duration: 720ms, 240ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 400ms); }
+.page.play .kara.words .w2 .c { animation-duration: 656ms, 208ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 480ms); }
+.page.play .kara.words .w3 .c { animation-duration: 496ms, 192ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 288ms); }
