@@ -88,6 +88,24 @@
     setTimeout(() => { locked = false; }, 950);
   }, { passive: false });
 
+  let tY = null, tAtEnd = false, tAtTop = false, tBox = null;
+  window.addEventListener('touchstart', (e) => {
+    const pg = e.target.closest && e.target.closest('.page--scroll');
+    tBox = pg && pg.querySelector('.page__inner');
+    if (!tBox) { tY = null; return; }
+    tY = e.touches[0].clientY;
+    tAtEnd = tBox.scrollTop + tBox.clientHeight >= tBox.scrollHeight - 2;
+    tAtTop = tBox.scrollTop <= 1;
+  }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (tY === null || !tBox) return;
+    const dy = e.changedTouches[0].clientY - tY;
+    const nowEnd = tBox.scrollTop + tBox.clientHeight >= tBox.scrollHeight - 2;
+    if (dy < -50 && tAtEnd && nowEnd) go(current + 1);
+    else if (dy > 50 && tAtTop && tBox.scrollTop <= 1) go(current - 1);
+    tY = null;
+  }, { passive: true });
+
   window.addEventListener('keydown', (e) => {
     if (e.target.closest('input, textarea, select')) return;
     if (['ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); go(current + 1); }
