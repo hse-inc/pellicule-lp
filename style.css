@@ -1264,3 +1264,5 @@ a { color: inherit; text-decoration: none; }
 .page.play .kara.words .w1 .c { animation-duration: 720ms, 240ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 400ms); }
 .page.play .kara.words .w2 .c { animation-duration: 656ms, 208ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 480ms); }
 .page.play .kara.words .w3 .c { animation-duration: 496ms, 192ms; animation-delay: var(--ct, 0ms), calc(var(--ct, 0ms) + 288ms); }
+
+.req__list dd i { display: none; }
