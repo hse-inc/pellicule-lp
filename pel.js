@@ -51,6 +51,18 @@
         el.querySelectorAll('.shot__tags li').forEach((li, k) => { t = Math.max(t, 2200 + k * 250); li.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
         t += BLOCK_GAP; return;
       }
+      if (el.matches('.levels')) {
+        const base = t;
+        const l1 = el.querySelector('.climb__l--1'), l4 = el.querySelector('.climb__l--4'), l5 = el.querySelector('.climb__l--5');
+        const sched = [base];
+        t = base + 450; wrapEl(l1);
+        sched[1] = Math.max(t + 900, base + 1800); sched[2] = sched[1] + 1600; sched[3] = sched[2] + 1600;
+        t = sched[3] + 450; wrapEl(l4);
+        sched[4] = t + 1100;
+        t = sched[4] + 450; wrapEl(l5);
+        el.dataset.sched = sched.join(',');
+        t += BLOCK_GAP; return;
+      }
       if (el.matches('.diary')) {
         const base = t;
         const l1 = el.querySelector('.climb__l--1'), l4 = el.querySelector('.climb__l--4'), l5 = el.querySelector('.climb__l--5');
@@ -141,6 +153,33 @@
     set(0);
     new MutationObserver(() => { if (pg.classList.contains('play')) run(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
     cards.forEach((c, i) => c.addEventListener('click', () => { timers.forEach(clearTimeout); set(i); }));
+  }
+
+  const lvBox = document.querySelector('.levels');
+  if (lvBox) {
+    const pg = lvBox.closest('.page');
+    const num = lvBox.querySelector('.levels__num'), tag = lvBox.querySelector('.levels__tag');
+    const L = { 1: lvBox.querySelector('.climb__l--1'), 4: lvBox.querySelector('.climb__l--4'), 5: lvBox.querySelector('.climb__l--5') };
+    const COL = ['#212121', '#212121', '#212121', '#0563ae', '#f26923'];
+    const TAG = ['', '', '', '課長', '部長'];
+    const set = (i, anim) => {
+      lvBox.style.setProperty('--lv-c', COL[i]);
+      const old = num.querySelector('.levels__n:not(.is-out)');
+      const nb = document.createElement('b'); nb.className = 'levels__n'; nb.textContent = String(i + 1).padStart(2, '0');
+      if (anim && old) { old.classList.add('is-out'); setTimeout(() => old.remove(), 600); nb.classList.add('is-in'); } else { num.innerHTML = ''; }
+      num.appendChild(nb);
+      tag.textContent = TAG[i]; tag.classList.toggle('is-on', !!TAG[i]);
+      const cur = i >= 4 ? 5 : i >= 3 ? 4 : 1;
+      Object.entries(L).forEach(([k, el]) => { k = +k; el.classList.toggle('is-wait', k > cur); el.classList.toggle('is-past', k < cur); });
+    };
+    let timers = [];
+    const run = () => {
+      timers.forEach(clearTimeout); timers = []; set(0, false);
+      const sched = (lvBox.dataset.sched || '').split(',').map(Number);
+      sched.forEach((ms, i) => { if (i) timers.push(setTimeout(() => set(i, true), ms)); });
+    };
+    set(0, false);
+    new MutationObserver(() => { if (pg.classList.contains('play')) run(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
   }
 
   const sync = () => {

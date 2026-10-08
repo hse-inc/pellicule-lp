@@ -180,7 +180,7 @@ a { color: inherit; text-decoration: none; }
 
 .page__inner { gap: 1.2em; }
 .body { font-size: 1.32em; line-height: 1.9; }
-.body--strong { font-size: 1.42em; }
+.body--strong { font-size: 1.32em; }
 .big { font-size: 1.7em; line-height: 1.5; }
 .stairs__txt { font-size: 1.08em; }
 
@@ -421,6 +421,26 @@ a { color: inherit; text-decoration: none; }
 .page.play .diary__txt .climb__l--4 { border-left-color: var(--color-blue) !important; }
 .page.play .diary__txt .climb__l--5 { border-left-color: var(--color-orange) !important; }
 
+.levels { display: grid; gap: 0.4em; }
+.levels__head { display: flex; align-items: flex-end; gap: 0.25em; line-height: 0.82; }
+.levels__lv { font-family: var(--font-display); font-weight: 800; font-size: 1em; letter-spacing: 0.14em; padding-bottom: 0.35em; writing-mode: vertical-rl; rotate: 180deg; }
+.levels__num { position: relative; display: block; height: 0.86em; width: 2.3em; overflow: hidden; font-family: var(--font-display); font-weight: 800; font-size: 5.6em; letter-spacing: -0.03em; }
+.levels__n { position: absolute; left: 0; top: 0; display: block; color: var(--lv-c, var(--color-ink)); transition: color 400ms linear; }
+.levels__n.is-in { animation: lv-in 620ms cubic-bezier(0.2, 1.1, 0.35, 1) 180ms both; }
+.levels__n.is-out { animation: lv-out 260ms ease-in both; }
+@keyframes lv-in { from { transform: translateY(105%) skewY(8deg); } to { transform: none; } }
+@keyframes lv-out { to { transform: translateY(-105%) skewY(-8deg); opacity: 0; } }
+.levels__tag { margin: 0 0 0.55em 0.3em; padding: 0.15em 0.7em; border-radius: 999px; font-weight: 900; font-size: 1.1em; color: #fff; background: var(--lv-c, var(--color-ink)); opacity: 0; transform: translateX(-0.6em); transition: opacity 300ms linear, transform 500ms var(--ease-out), background-color 300ms linear; }
+.levels__tag.is-on { opacity: 1; transform: none; }
+
+.levels__txt { display: flex; flex-direction: column; gap: 0.15em; height: auto; font-weight: 900; }
+.levels__txt .climb__l { grid-row: auto; align-self: flex-start; font-size: 1.35em; line-height: 1.4; transition: font-size 500ms var(--ease-out), opacity 500ms linear; }
+.levels__txt .climb__l.is-past { font-size: 0.95em; opacity: 0.5; }
+.levels__txt .climb__l--4 { --on: var(--color-blue); }
+.levels__txt .climb__l--5 { --on: var(--color-orange); }
+.levels__txt .climb__l.is-wait { max-height: 0; overflow: hidden; margin: 0; }
+.levels__txt .climb__l { max-height: 4em; border: 0 !important; padding-left: 0 !important; }
+
 .page__inner { justify-content: flex-start; padding-top: calc(var(--header-h) + 0.8em); padding-bottom: calc(4.2em + 10px); }
 .page--concept .page__inner { gap: 1.05em; }
 .page__inner > :first-child { margin-top: auto; }
@@ -428,12 +448,35 @@ a { color: inherit; text-decoration: none; }
 
 .page__inner > .enlab + * { margin-top: -0.55em; }
 
+.page { --u: clamp(10.5px, min(1.86dvh, 3.15vw), 15.2px); }
+.page__inner { gap: 0 !important; }
+.page__inner > * + * { margin-top: calc(var(--u) * 1.1); }
+
+.page--about .enlab + .ttl { margin-top: calc(var(--u) * 0.05) !important; }
+.page--about .ttl + .mega { margin-top: calc(var(--u) * 1.5); }
+.page--about .mega + .shot, .page--about .shot + .body { margin-top: calc(var(--u) * 1.6); }
+
+.page--concept .enlab + .hero-ttl { margin-top: calc(var(--u) * 1.3) !important; }
+.page--concept .hero-ttl + .big { margin-top: calc(var(--u) * 1.6); }
+.page--concept .big + .body { margin-top: calc(var(--u) * 1.5); }
+.page--concept .body + .words { margin-top: calc(var(--u) * 1.6); }
+.page--concept .words + .body { margin-top: calc(var(--u) * 1.3); }
+
+.page--level .mega + .body { margin-top: calc(var(--u) * 1.5); }
+.page--level .body + .levels, .page--level .levels + .body { margin-top: calc(var(--u) * 1.6); }
+
+.hero-ttl .l { font-size: 3.3em; }
+.words { font-size: 2.1em; }
+.shot__stage { height: 10.5em; }
+
 @media (max-height: 740px) {
   .page__inner { gap: 0.8em; padding-top: calc(var(--header-h) + 0.3em); }
   .enlab__a { font-size: 1.7em; } .enlab__b { font-size: 1.8em; } .enlab__pic { height: 1.65em; width: 3.8em; } .enlab__c { font-size: 0.9em; }
   @keyframes pill { 0% { opacity: 0; transform: none; width: 0; } 100% { opacity: 1; transform: none; width: 3.8em; } }
-  .hero-ttl .s { font-size: 2em; } .hero-ttl .l { font-size: 3.2em; }
-  .words { font-size: 2em; }
+  .hero-ttl .s { font-size: 1.7em; } .hero-ttl .l { font-size: 2.6em; }
+  .page--concept .body { line-height: 1.62; } .page--concept .body--strong { font-size: 1.25em; } .page--concept .big { font-size: 1.5em; }
+  .page--about .body { line-height: 1.7; }
+  .words { font-size: 1.8em; }
   .mega { font-size: 1.95em; } .mega--q { font-size: 1.8em; }
   .body { line-height: 1.75; }
   .film { padding: 13px 10px 8px; }
@@ -441,18 +484,20 @@ a { color: inherit; text-decoration: none; }
   .climb__route, .climb__txt { height: 9.4em; } .climb__stop b { width: 1.6em; height: 1.6em; }
   .hook__n { font-size: 2em; }
   .page--level .page__inner { gap: 0.6em; }
-  .shot__stage { height: 10em; } .orb__c { width: 6.4em; margin-left: -3.2em; } .shot__cam { width: 6.2em; height: 4.6em; }
+  .shot__stage { height: 8.8em; } .orb__c { width: 6.4em; margin-left: -3.2em; } .shot__cam { width: 6.2em; height: 4.6em; }
   .ttl--co { font-size: 1.5em; }
-  .page--concept .page__inner { gap: 0.65em; }
+
   .diary__stage { height: 6.2em; } .diary__c { width: 7.2em; margin-left: -3.6em; }
-  .page--level .hook__n { font-size: 1.8em; }
-  .page--level .page__inner { gap: 0.45em; padding-top: calc(var(--header-h) + 0.1em); padding-bottom: calc(2.6em + 8px); }
+  .page--level .hook__n { font-size: 1.7em; }
+  .page--level .page__inner { padding-top: calc(var(--header-h) + 0.4em); padding-bottom: calc(3.4em + 8px); }
   .page--level .body { line-height: 1.6; }
   .page--level .big { font-size: 1.45em; }
   .page--level .hook__eyes { margin-bottom: 0.45em; }
+  .levels__num { font-size: 4.4em; } .levels__txt .climb__l { font-size: 1.2em; }
   .diary { gap: 0.35em; } .diary__txt { gap: 0.15em; line-height: 1.45; }
 }
 @media (max-height: 600px) {
+  .shot__stage { height: 8em; }
   .page__inner { gap: 0.6em; }
   .enlab__c { display: none; }
   .hero-ttl .l { font-size: 2.8em; } .words { font-size: 1.75em; } .big { font-size: 1.5em; }
