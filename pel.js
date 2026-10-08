@@ -18,7 +18,7 @@
     return out;
   };
   pages.forEach((pg) => {
-    let t = 450;
+    let t = pg.id === 'p3' ? 1500 : 450;
     const wrapEl = (el) => { const t0 = t; wrap(el); el.style.setProperty('--lt', t0 + 'ms'); el.style.setProperty('--ld', Math.max(300, t - t0 + 300) + 'ms'); };
     const wrap = (node) => {
       [...node.childNodes].forEach((n) => {
@@ -199,6 +199,14 @@
     let wait = null;
     const run = () => { clearInterval(timer); clearTimeout(wait); a = 0; set(); if (!reduce) wait = setTimeout(() => { timer = setInterval(() => { a = (a + 1) % N; set(); }, 2200); }, (+gal.dataset.gt || 0) + 600); };
     new MutationObserver(() => { if (pg.classList.contains('play')) run(); else { clearInterval(timer); clearTimeout(wait); } }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  const lv = document.getElementById('p3');
+  if (lv) {
+    const boom = document.createElement('p');
+    boom.className = 'boom'; boom.setAttribute('aria-hidden', 'true');
+    boom.innerHTML = '<span class="boom__n">ん？</span>';
+    lv.appendChild(boom);
   }
 
   const later = new Map();
