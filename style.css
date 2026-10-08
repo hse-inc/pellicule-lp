@@ -554,3 +554,9 @@ a { color: inherit; text-decoration: none; }
   .hero-ttl .l { font-size: 2.2em; } .words { font-size: 1.45em; }
   .page--level .page__inner > * + * { margin-top: calc(var(--u) * 0.9); }
 }
+
+.mk { transition-delay: 0ms !important; }
+.page.play .mk:not(.is-on) { background-size: 0% 100%; }
+.page.play .gallery { animation: none; }
+.page.play .gallery.is-on { animation: gal-in 650ms var(--ease-out) both; }
+@media (prefers-reduced-motion: reduce) { .page.play .gallery { opacity: 1; animation: none !important; } }

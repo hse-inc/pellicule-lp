@@ -201,11 +201,26 @@
     new MutationObserver(() => { if (pg.classList.contains('play')) run(); else { clearInterval(timer); clearTimeout(wait); } }).observe(pg, { attributes: true, attributeFilter: ['class'] });
   }
 
+  const later = new Map();
+  const reveal = (pg) => {
+    hide(pg);
+    const ts = [];
+    pg.querySelectorAll('.mk, .gallery').forEach((el) => {
+      const ms = parseFloat(el.matches('.gallery') ? el.dataset.gt : el.style.getPropertyValue('--t2')) || 0;
+      ts.push(setTimeout(() => el.classList.add('is-on'), reduce ? 0 : ms));
+    });
+    later.set(pg, ts);
+  };
+  const hide = (pg) => {
+    (later.get(pg) || []).forEach(clearTimeout); later.delete(pg);
+    pg.querySelectorAll('.mk.is-on, .gallery.is-on').forEach((el) => el.classList.remove('is-on'));
+  };
+
   const sync = () => {
     pages.forEach((pg) => {
       const on = pg.classList.contains('is-active');
-      if (on && !pg.classList.contains('play')) { void pg.offsetWidth; pg.classList.add('play'); }
-      if (!on && pg.classList.contains('play')) pg.classList.remove('play');
+      if (on && !pg.classList.contains('play')) { void pg.offsetWidth; pg.classList.add('play'); reveal(pg); }
+      if (!on && pg.classList.contains('play')) { pg.classList.remove('play'); hide(pg); }
     });
     column.dataset.page = pages[0].classList.contains('is-active') ? 'top' : '';
   };
