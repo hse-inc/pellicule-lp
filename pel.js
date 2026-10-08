@@ -213,7 +213,7 @@
   if (lv) {
     const boom = document.createElement('p');
     boom.className = 'boom'; boom.setAttribute('aria-hidden', 'true');
-    boom.innerHTML = '<span class="boom__n">ん？</span>';
+    boom.innerHTML = '<span class="boom__n"><svg class="boom__eyes"><use href="#eyes"/></svg>ん？</span>';
     lv.appendChild(boom);
   }
 
