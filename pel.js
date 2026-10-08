@@ -38,6 +38,7 @@
           n.replaceWith(frag);
         } else if (n.nodeType === 1) {
           if (n.matches('.q2')) return;
+          if (n.matches('.stamp')) { n.style.setProperty('--st', (t + 500) + 'ms'); return; }
           const t0 = t;
           wrap(n);
           if (n.matches('.ln')) { n.style.setProperty('--lt', t0 + 'ms'); n.style.setProperty('--ld', Math.max(300, t - t0 + 300) + 'ms'); t += LINE_GAP; }
@@ -96,8 +97,13 @@
         el.querySelectorAll('.film__f').forEach((f, k) => { t = Math.max(t, 2000 + k * 250); f.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
         t += BLOCK_GAP; return;
       }
-      const targets = el.matches('.kara') ? [el] : [...el.querySelectorAll('.kara')];
-      targets.forEach(wrap);
+      const seq = (x) => {
+        if (x.matches('.page__label')) return;
+        if (x.matches('.kara')) { wrap(x); return; }
+        if (x.matches('.blk')) { x.dataset.gt = t; t += 450; }
+        [...x.children].forEach(seq);
+      };
+      seq(el);
       if (el.matches('.stairs')) t += 300;
       t += BLOCK_GAP;
     });
@@ -213,16 +219,45 @@
   const reveal = (pg) => {
     hide(pg);
     const ts = [];
-    pg.querySelectorAll('.mk, .gallery').forEach((el) => {
-      const ms = parseFloat(el.matches('.gallery') ? el.dataset.gt : el.style.getPropertyValue('--t2')) || 0;
+    pg.querySelectorAll('.mk, .gallery, .blk').forEach((el) => {
+      const ms = parseFloat(el.matches('.gallery, .blk') ? el.dataset.gt : el.style.getPropertyValue('--t2')) || 0;
       ts.push(setTimeout(() => el.classList.add('is-on'), reduce ? 0 : ms));
     });
     later.set(pg, ts);
   };
   const hide = (pg) => {
     (later.get(pg) || []).forEach(clearTimeout); later.delete(pg);
-    pg.querySelectorAll('.mk.is-on, .gallery.is-on').forEach((el) => el.classList.remove('is-on'));
+    pg.querySelectorAll('.mk.is-on, .gallery.is-on, .blk.is-on').forEach((el) => el.classList.remove('is-on'));
   };
+
+  document.querySelectorAll('.album').forEach((al) => {
+    const pg = al.closest('.page');
+    const cards = [...al.querySelectorAll('li')];
+    cards.forEach((c, i) => c.style.setProperty('--i', i));
+    let k = -1, timer = null, wait = null;
+    const show = (i) => { k = i; cards.forEach((c, j) => c.classList.toggle('is-front', j === i)); al.classList.toggle('has-front', i >= 0); };
+    const stop = () => { clearTimeout(wait); clearInterval(timer); show(-1); };
+    const loop = () => { clearInterval(timer); timer = setInterval(() => show((k + 1) % cards.length), 2600); };
+    const run = () => { stop(); if (reduce) return; wait = setTimeout(() => { show(0); loop(); }, (+al.dataset.gt || 0) + cards.length * 110 + 900); };
+    cards.forEach((c, i) => c.addEventListener('click', () => { clearTimeout(wait); show(k === i ? -1 : i); loop(); }));
+    new MutationObserver(() => { if (pg.classList.contains('play')) run(); else stop(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  const form = document.querySelector('.entry');
+  if (form) {
+    const fields = [...form.querySelectorAll('.entry__f')];
+    form.addEventListener('focusin', (e) => { const f = e.target.closest('.entry__f'); fields.forEach((x) => x.classList.toggle('is-focus', x === f)); });
+    form.addEventListener('focusout', (e) => { const f = e.target.closest('.entry__f'); if (f && !f.contains(e.relatedTarget)) f.classList.remove('is-focus'); });
+    const msg = form.querySelector('.entry__msg');
+    form.querySelector('.entry__send').addEventListener('click', () => {
+      const miss = [...form.querySelectorAll('[required]')].filter((el) => !el.value.trim());
+      fields.forEach((f) => f.classList.remove('is-miss'));
+      miss.forEach((el) => el.closest('.entry__f').classList.add('is-miss'));
+      msg.textContent = miss.length ? '必須の項目を入力してください。' : '送信先は準備中です。';
+      if (miss.length) miss[0].focus();
+    });
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
 
   const sync = () => {
     pages.forEach((pg) => {

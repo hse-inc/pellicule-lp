@@ -61,7 +61,8 @@
 
   let locked = false, acc = 0, accTimer = null;
   const insideScroll = (target, dy) => {
-    const box = target.closest && target.closest('.page--scroll');
+    const pg = target.closest && target.closest('.page--scroll');
+    const box = pg && pg.querySelector('.page__inner');
     if (!box) return null;
     const now = performance.now();
     const can = dy > 0 ? box.scrollTop + box.clientHeight < box.scrollHeight - 1 : box.scrollTop > 0;
