@@ -88,6 +88,10 @@
         el.dataset.sched = sched.join(',');
         t += BLOCK_GAP; return;
       }
+      if (el.matches('.gallery')) {
+        el.style.setProperty('--gt', t + 'ms'); el.dataset.gt = t;
+        t += 700 + BLOCK_GAP; return;
+      }
       if (el.matches('.film')) {
         el.querySelectorAll('.film__f').forEach((f, k) => { t = Math.max(t, 2000 + k * 250); f.querySelectorAll('.kara').forEach((x) => { wrapEl(x); }); });
         t += BLOCK_GAP; return;
@@ -192,8 +196,9 @@
       c.style.setProperty('--off', off); c.style.setProperty('--abs', Math.min(2, Math.abs(off))); c.style.visibility = Math.abs(off) > 2 ? 'hidden' : '';
     });
     set();
-    const run = () => { clearInterval(timer); a = 0; set(); if (!reduce) timer = setInterval(() => { a = (a + 1) % N; set(); }, 2200); };
-    new MutationObserver(() => { if (pg.classList.contains('play')) run(); else clearInterval(timer); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+    let wait = null;
+    const run = () => { clearInterval(timer); clearTimeout(wait); a = 0; set(); if (!reduce) wait = setTimeout(() => { timer = setInterval(() => { a = (a + 1) % N; set(); }, 2200); }, (+gal.dataset.gt || 0) + 600); };
+    new MutationObserver(() => { if (pg.classList.contains('play')) run(); else { clearInterval(timer); clearTimeout(wait); } }).observe(pg, { attributes: true, attributeFilter: ['class'] });
   }
 
   const sync = () => {
