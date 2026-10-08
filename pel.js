@@ -38,6 +38,8 @@
           n.replaceWith(frag);
         } else if (n.nodeType === 1) {
           if (n.matches('.q2')) return;
+          if (n.matches('svg')) { n.style.setProperty('--st', t + 'ms'); return; }
+          if (n.matches('.tagx')) { n.style.setProperty('--st', (t + 200) + 'ms'); return; }
           if (n.matches('.stamp')) { n.style.setProperty('--st', (t + 500) + 'ms'); return; }
           const t0 = t;
           wrap(n);
@@ -230,8 +232,34 @@
     pg.querySelectorAll('.mk.is-on, .gallery.is-on, .blk.is-on').forEach((el) => el.classList.remove('is-on'));
   };
 
+  function makeBook(al, pg) {
+    const srcs = [...al.querySelectorAll('li img')].map((im) => im.getAttribute('src'));
+    const book = document.createElement('div'); book.className = 'book';
+    book.innerHTML = '<span class="book__rings"></span>' + srcs.map((src, i) =>
+      '<div class="book__leaf" style="--n:' + i + '"><div class="book__face book__front"><figure class="book__ph"><img src="' + src + '" alt="" decoding="async"></figure>'
+      + '<span class="book__no">' + String(i + 1).padStart(2, '0') + '</span></div><div class="book__face book__back"></div></div>').join('');
+    al.appendChild(book);
+    const leaves = [...book.querySelectorAll('.book__leaf')];
+    let k = 0, timer = null, wait = null;
+    const flip = () => {
+      if (k >= leaves.length - 1) {
+        book.classList.add('is-reset'); leaves.forEach((l) => l.classList.remove('is-turned')); k = 0;
+        void book.offsetWidth; book.classList.remove('is-reset'); return;
+      }
+      leaves[k].classList.add('is-turned'); k += 1;
+    };
+    const stop = () => { clearTimeout(wait); clearInterval(timer); book.classList.add('is-reset'); leaves.forEach((l) => l.classList.remove('is-turned')); k = 0; void book.offsetWidth; book.classList.remove('is-reset'); };
+    const loop = () => { clearInterval(timer); timer = setInterval(flip, 2600); };
+    const run = () => { stop(); if (reduce) return; wait = setTimeout(() => { flip(); loop(); }, (+al.dataset.gt || 0) + 1600); };
+    book.addEventListener('click', () => { clearTimeout(wait); flip(); loop(); });
+    new MutationObserver(() => { if (pg.classList.contains('play')) run(); else stop(); }).observe(pg, { attributes: true, attributeFilter: ['class'] });
+  }
+
   document.querySelectorAll('.album').forEach((al) => {
     const pg = al.closest('.page');
+    const mode = new URLSearchParams(location.search).get('album') || pg.dataset.album || 'book';
+    pg.dataset.album = mode;
+    if (mode === 'book') { makeBook(al, pg); return; }
     const cards = [...al.querySelectorAll('li')];
     cards.forEach((c, i) => c.style.setProperty('--i', i));
     let k = -1, timer = null, wait = null;
